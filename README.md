@@ -1,516 +1,60 @@
 # TSA Drone Project
+A custom-built quadcopter drone with an integrated claw and live video feed, designed to remotely locate and retrieve caged and uncaged animals for TSA's 2026 Drone Challenge (Safari Rescue mission).
 
+<img width="982" height="625" alt="image" src="https://github.com/user-attachments/assets/326455fe-56a2-43a1-b644-139c3d407ec6" />
 
- Drone Challenge (UAV)
-2026 Safari Rescue - HS Drone UAV
+## 30+ Page Documentation Portfolio
+[IHC Documentation Portfolio - Drone Challenge UAV  (1).pdf](https://github.com/user-attachments/files/29614611/IHC.Documentation.Portfolio.-.Drone.Challenge.UAV.1.pdf)
 
+## Features
 
-Conference City and State: 
+- 3D-printed frame, base structure, and claw mechanism, designed in SolidWorks
+- 4x brushless motors (RS2205 2300KV) with tri-blade propellers for lift and thrust
+- SoloGood F722 flight controller stack running Betaflight firmware in Angle Mode for automatic self-leveling
+- BetaFPV ELRS 2.4GHz receiver paired with a BetaFPV controller for piloting
+- Raspberry Pi Zero WH running Raspberry Pi OS, controlling the claw servos and USB webcam independently of the flight stack
+- 3x SG90 micro servos actuating a 3-pronged claw for picking up and releasing targets
+- XT30/XT60 smoke stopper for short-circuit protection
+- Dual 3S LiPo 11.1V 5000mAh batteries
 
-Georgia TSA State Leadership Conference (SLC) 2026
-Athens, Georgia
+## How it works
 
+The pilot flies the drone using a BetaFPV controller, which sends inputs to the onboard ELRS receiver at up to 500Hz. Betaflight, running on the SoloGood F722 stack, reads these inputs alongside data from the onboard IMU (gyroscope + accelerometer) and calculates motor outputs at 4-8kHz to keep the drone stable. In Angle Mode, the drone self-levels whenever the sticks are centered, which keeps it steady during claw operations without needing constant manual correction.
 
-School/Chapter:
+A Raspberry Pi Zero WH, handles the claw and camera. It drives the 3 SG90 servos that open and close the claw, and streams a live feed from a USB webcam back to the pilot's laptop for target identification. Betaflight and the Pi operate independently: Betaflight handles flight, the Pi handles the mission payload.
 
-South Forsyth High School
-Cumming, Georgia - 30041
+## Bill of Materials
 
+| Part | Description | Qty |
+|---|---|---|
+| Anycubic Kobra 2 | 3D printer | 1 |
+| Sunlu PETG | Print filament | 4 |
+| Drone Frame (3D-printed) | Upper + lower frame housing all components | 2 |
+| XT30/XT60 FPV Smoke Stopper | Short-circuit protection | 1 |
+| Raspberry Pi Zero WH | Claw + video control | 1 |
+| OVONIC D15 Dual LiPo Charger | Battery charging | 1 |
+| 3S LiPo 11.1V 5000mAh | Power | 2 |
+| BetaFPV Controller | Piloting | 1 |
+| BetaFPV ELRS (2.4GHz, 500Hz) | Radio link | 1 |
+| SoloGood F722 Stack | Flight controller | 1 |
+| Readytosky RS2205 2300KV Brushless Motor | Lift/thrust | 4 |
+| 5.1" 3-Paddle Propellers | — | 12 |
+| Webcam | Target ID / video feed | 1 |
+| SG90 Micro Servos | Claw actuation | 3 |
+| 5V Converter | Powers Pi + servos | 1 |
+| Claw (3D-printed) | Pickup mechanism | 1 |
 
+*(full BOM with sourcing links in the [IHC Documentation Portfolio - Drone Challenge UAV  (1).pdf](https://github.com/user-attachments/files/29614611/IHC.Documentation.Portfolio.-.Drone.Challenge.UAV.1.pdf))*
 
-Team Members:
+## Compliance
 
-Benjamin Anthony
-Taran Vijayakumar
-Nathaniel Ramnath
-Ivin George
+Built and flown in accordance with FAA Part 107 and Remote ID requirements, 400ft altitude ceiling, and Georgia state UAS regulations. Full regulatory breakdown in the documentation portfolio.
 
+## Credits
 
+Built by Benjamin Antony, Taran Vijayakumar, Nathaniel Ramnath, and Ivin George for South Forsyth High School's TSA chapter — Georgia TSA SLC 2026, Athens, GA.
 
+3D model sources: claw arm, landing gear, propeller guard, Pi enclosure, servo/webcam mounts, and drone frame base are credited with links in the documentation portfolio's Resources section.
 
-Table of Contents
-
-
-
-Section
-Page
-Photo Log
-3-12
-Wiring Diagrams
-13
-Programming Software Explanation
-14-16
-Engineered Drawings
-17-19
-Bill of Materials
-20-21
-Drone Regulations
-22-23
-Resources & Sources
-24
-Worklog
-25-27
-Student Copyright Checklist
-28-31
-
-
-
-
-Photo Log
-
-Photo 1 - Designing the Drone Frame on SolidWorks
-
-<img width="691" height="285" alt="image" src="https://github.com/user-attachments/assets/8977f11b-a80e-4bc8-8c8d-fa6ff5f54d3e" />
-
-<img width="1170" height="477" alt="image" src="https://github.com/user-attachments/assets/f7ef93fc-60b5-45da-bec0-9ead3188e438" />
-
-
-
-These images show the initial 3D modeling of the drone frame in SolidWorks. Designing the frame digitally allowed accurate planning before printing and ensured all components would fit properly.
-
-   Photo 2 - Attaching Motors to 3D-Printed Frame
-
-
-<img width="1536" height="2048" alt="image" src="https://github.com/user-attachments/assets/4a248c9b-ebdc-4845-b55f-ba6dccf327e6" />
-
-
-
-In this step, the motors were screwed onto the 3D-printed drone frame, ensuring each motor is securely mounted and ready for wiring.
-
-
-
-Photo 3 - Soldering Motor Wires to the ESC
-
-<img width="2048" height="1152" alt="image" src="https://github.com/user-attachments/assets/e88e6718-650a-42a5-963b-2481c51b996e" />
-
-<img width="2048" height="1536" alt="image" src="https://github.com/user-attachments/assets/7988edd5-8835-455a-90dc-826dc11730a2" />
-
-
-
-These photos show the soldering process where each motor’s wires are connected to the Electronic Speed Controller (ESC).
-
-Photo 4 - Installing Flight Controller and ELRS
-
-
-<img width="2048" height="1152" alt="image" src="https://github.com/user-attachments/assets/bcce1526-7d5f-429e-946b-dc64b21af389" />
-
-
-<img width="2048" height="1152" alt="image" src="https://github.com/user-attachments/assets/2b0ecbed-bb59-4b14-9a82-bf5be4e7a88b" />
-
-
-These photos show the installation of the flight controller and the ELRS receiver, completing the drone’s control and communication system.
-
-Photo 5 - Installing Top Frame
-
- <img width="2048" height="1152" alt="image" src="https://github.com/user-attachments/assets/d00fea98-3ba1-4d44-a488-48374ea52eb8" />
-
-
-
-
-
-These photos show the installation of the 3D-printed top frame above the ESC, securing and protecting the components.
-    
-
-
-Photo 6 - Soldering battery wires to the ESC
-
-
- <img width="1536" height="2048" alt="image" src="https://github.com/user-attachments/assets/2f5b63d3-1014-4e3b-83e0-620224a94cb1" />
-
-
-
-
-These photos show the soldering process where the drone’s battery power leads (positive red and negative black wires) are connected to the ESC power input pads, ensuring current delivery to all four motors. 
-
-
-
-Photo 7 - Connecting Ribbon Cable to the Flight Controller
-
-
-
-<img width="2048" height="1714" alt="image" src="https://github.com/user-attachments/assets/da178565-375a-4bf5-bf47-69bee13eadbe" />
-
-
-
-
-This photo shows the ribbon cable connection between the ESC and the flight controller for power and signal transmission. 
-
-
-
-
-
-Photo 8 - Connecting the Raspberry Pi to the Flight Controller
-
-<img width="1536" height="2048" alt="image" src="https://github.com/user-attachments/assets/981779db-eb3f-4ed0-a5a3-ebf41e3a87af" />
-
-
-
-
-This photo shows the Raspberry Pi connected to the drone’s flight controller to control the claw and webcam. 
-
-
-
-
-Photo 9 - Raspberry Pi and Webcam Mounted
-
-
-
-<img width="2048" height="2039" alt="image" src="https://github.com/user-attachments/assets/1f97cd70-d2be-49f1-8d4b-dd94ea192a71" />
-
-
-
-
-This photo shows the Raspberry Pi and webcam securely mounted on the drone frame. 
-
-
-
-
-Photo 10 - Drone connected to Betaflight configurator
-
-
-
-<img width="2048" height="1246" alt="image" src="https://github.com/user-attachments/assets/2e3eb6b8-eb6c-4a18-ac49-0e60b52c57b2" />
-
-
-
-
-This photo shows the drone connected via USB to a laptop running Betaflight Configurator for flight control setup, receiver binding, controller and motor testing.
-
-[Drone is currently under development. Photo log and other documentation will continue to be updated.]
-
-
-
-Wiring Diagram
-
-
-<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/942370b5-86d4-4d81-bdba-36df967b7830" />
-
-
-The information contained in this drawing is the sole property of Benjamin Antony, Taran Vijayakumar, Nathaniel Ramnath and Ivin George.
-
-[Source of Flight Stack image: SoloGood FC Product Manual, used for illustrative purposes only]
-
-
-Programming Software
-
-Betaflight is an open-source flight control firmware that runs on the drone’s flight controller microprocessor (in this build: STM32 F722 SoloGood stack) and acts as the central system coordinating all electronics. It continually processes pilot commands received via radio link (here using a BetaFPV ELRS 2.4 GHz receiver operating at 500Hz with the BetaFPV controller) while reading data from an Inertial Measurement Unit (IMU) containing a 3-axis gyroscope and 3-axis accelerometer. 
-
-For this Safari Rescue mission, we configured the drone to operate in Angle Mode, which provides automatic self-leveling for stability.Betaflight is good for our project because when the sticks are centered in Angle Mode, the outer loop commands zero tilt, causing the drone to actively self-level and maintain stable hover. This automatic stabilization is essential during our claw operations, as it eliminates the need for manual corrections and allows us to focus on collecting the target and claw positioning. 
-
-With Betaflight software, we will be able to tune our drone to our liking with many settings like PID, throttle response, and filters, which will allow the drone to fly optimally. The PID will be used for controlling how the vibrations from our brushless motors affect our drone in flight. This is extremely important to make sure our drone doesn't do anything that could cause harm to the components, which is exemplified by the fact that our frame is 3D printed. 
-
-Betaflight also allows us to configure the drone without manually making code for our specific motherboard, which will speed up the process of tuning and connecting the drone. Betaflight will also give us full control of everything connected to the motherboard, which includes servos, transmitter, and video broadcasting system. 
-
-Our flight control loop also operates at high speeds: the ICM42688P gyroscope can sample up to 8 kHz, with PID calculations typically running at 4-8 kHz depending on processor load and enabled features. This is combined with the ELRS (ExpressLRS) radio control protocol, which works with the controller’s pilot inputs sent to the ELRS receiver installed on the drone, with up to 500Hz update rate. Rapid input transmission from ExpressLRS and high frequency sensor feedback from the gyroscope contribute to the drone’s extremely low latency.
-
-We will be using Betaflight in conjunction with a Raspberry Pi Zero WH (which has its own power rail) to operate the claw system and transmit the video signal to our laptop. The Pi will be running Raspberry Pi OS, which is a custom version of Linux. This will connect to the signal wires for our servos and our USB webcam via the USB OTG port included in the microcomputer. The Betaflight software will also have control of our BetaFPV ELRS system, which connects the drone to the remote control system. This will allow us to tune our telemetry signal as well, and get the most performance out of our ELRS system for our specific use case. 
-
-Essentially, Betaflight is the flight control firmware that manages and allows all the major parts of the drone to work together.
-
-
-
-
-
-Engineered Drawings
-
-
-
-
-
-This engineered drawing shows the base frame, propeller and motor system, Raspberry Pi, claw, webcam, and all electronics. It shows the complete Safari Rescue drone configuration.
-
-
-Base Frame
-
-
-
-
-This engineered drawing shows the base frame with motor mounting holes and electronics mounting points. The design holds the motors, flight controller, ESC, and battery securely in place. It provides the main structure that connects all major components together for stable flight.
-
-
-
-Gripper/Claw
-
-
-
-
-This engineered drawing shows the claw mechanism and grip design. It holds and releases the caged and uncaged animals for the safari rescue mission.
-
-The information contained in these drawings are the sole property of Benjamin Antony, Taran Vijayakumar, Nathaniel Ramnath and Ivin George. Also reference the links in the Resources page.
-
- Bill of Materials
-
-
-Parts 
-Description
-
-        
-Quantity
-Anycubic Kobra 2 
-3D Printer 
-1
-Sunlu PETG
-Filament for 3D printer
-4
-Drone Frame
-3D-printed drone frame - It supports and protects all drone components, with the lower frame mounting the ESC and the upper frame supporting the flight controller, Raspberry Pi, and claw system.
-2
-XT30/XT60 FPV Smoke Stopper
-
-
-Short circuit protection - Protects stack and Raspberry Pi from catching on fire and protects electronic components from current surges.
-1
-Raspberry Pi Zero WH
-For handling the video feed and servo motors
-1
-OVONIC D15 Dual LiPo Battery Charger 
-Charges the battery
-1
-3S LiPo 11.1V 5000mAh battery
-Powers the drone and associated systems
-2
-Beta FPV controller
-For controlling and piloting the drone 
-1
-Beta FPV ELRS (0.7 g, 2.4 GHz, 5 V, 500Hz)
-Sends signal from the drone to the controller
-1
-SoloGood F722 Stack
-It acts like the motherboard of the drone, it determines motor speed and interprets signals
-1
-Readytosky RS2205 2300KV Brushless Motor CW/CCW 3-4S RC Motors
-
-
-Brushless motor that spins propellers to generate lift and provide thrust for flight.
-4
-5.1inch, 3-Paddle
-Propellers
-Creates lift to fly the drone
-12
-Webcam
-Provides a camera feed and target identification 
-1
-SG90 Micro Servos (from open-lab)
-Powers the claw to pick up objects 
-3
-5V Converter (from open-lab)
-5V regulator to power Raspberry Pi and servos.
-1
-Hand drill 
-Used for creating mounting holes to attach motors and other components to drone frame
-1
-Claw
-3D printed and used to pick up objects
-1
-
-
-
-
-
-
-
-
-
-
-
-
-
-Rules & Regulations
-
-
-Federal Rules and Regulations:
-
-In accordance with the Federal Aviation Administration (FAA) regulations, any unmanned aircraft weighing more than 250 grams must be registered with the FAA and must comply with RFID (Remote ID) requirements unless operated within a FAA-Recognized Identification Area (FRIA). Pilots must ensure that the aircraft’s Remote ID broadcast is functional prior to takeoff, as it transmits the drone’s location and registration information for accountability and airspace safety.
-
-The maximum allowable altitude for all drones is 400 feet above ground level. The aircraft must be maintained within Visual Line of Sight of the pilot or a dedicated spotter at all times. FPV (First Person View) operations are allowed only when a visual observer maintains unaided visual contact with the drone. Prior to flight, pilots are required to check the FAA B4UFLY application for airspace restrictions, such as those found near airports, military bases, or other controlled airspace. Drone flight is prohibited over national parks, and large gatherings of people, unless specific authorization is granted.
-Operations near critical infrastructure such as power plants, hospitals, and transmission lines are discouraged unless explicitly approved. All pilots are required to complete the FAA TRUST exam and have the required certification. The drone must not interfere with emergency response, law enforcement, or firefighting activities.The drone may not drop or release objects in a manner that creates a hazard to people or property. Flights should be conducted during daylight or civil twilight hours in accordance with FAA safety guidelines.
-
-Local/Regional Rules and Regulations:
-
-All operations comply with applicable Georgia state laws regarding unmanned aircraft systems and privacy. Operators are restricted from recording or photographing in areas where individuals have a reasonable expectation of privacy. Flight over state parks, public gatherings, correctional facilities, and using a drone to nuisance or annoy someone is strictly prohibited. Flights over private property without the property owner’s consent are prohibited. Obtaining prior permission from local authorities or park services is required for any educational or research-based drone missions in these areas.
-Giving way to manned aircraft is also required as well as requiring authorization to fly near the local Athens-Ben Epps Airport (AHN). Operators should file a LAANC (Low Altitude Authorization and Notification Capability) request when flying within controlled airspace near airports to ensure compliance with FAA airspace management.
-
-Resources & Sources
-
-3D models used:
-
-Claw arm: https://www.printables.com/model/1460464-replacement-arm-claw-for-pik-stik-grabber-tool/files
-
-Landing Gear:
-https://www.printables.com/model/67370-drone-landing-gear-sjrc-f11-pro
-
-FPV drone propeller guard:
-https://www.printables.com/model/1302713-5-fpv-drone-propeller-guard
-
-Raspberry Pi Flight Case:
-https://www.printables.com/model/703964-raspberry-pi-zero-2w-enclosure
-
-Servo Mockup:
-https://makerworld.com/en/models/1140652-sg90-micro-servo-9g-with-step#profileId-1142959
-
-Webcam Mockup:
-https://makerworld.com/en/models/1748017-runcam-thumb-2-fpv-camera-mount#profileId-1858095
-
-Drone Frame Files (ours is modified):
-https://makerworld.com/en/models/1336260-5-inch-fpv-drone
-
-Case for 5V Buck Converter:
-https://www.printables.com/model/326052-buck-converter-case
-
-Mockup of ESC and FC Board:
-https://www.printables.com/model/860808-mark4-drone-frame-stack-isolator
-
-Mockup For FPV drone motors:
-https://www.printables.com/model/665249-iflight-xing-2814-bldc-drone-motor
-
-Videos used:
-
-BetaFPV binding: https://youtu.be/3rdvve-Ecuc?si=N1mL7NIPLary5r7v
-
-Soldering tutorial: https://www.youtube.com/watch?v=l5hiIbGMowk
-
-Work Log
-
-
-Date
-Time spent
-Team Members Present
-Task/Activity
-Materials Used
-Progress
-Next Steps
-10/7/2025
-1.5 hrs
-Ben, Taran 
-Brainstormed potential designs for drone challenge
-Laptops, Internet research
-Figured out a clear roadmap and that we needed motors that can hold 1 kilogram of weight each
-Find out parts online for budget of $300 and more research for drone
-10/21/2025
-- 10/22/2025
-3 hrs
-Ben, Taran 
-Conducted research on drone designs 
-Laptops, and Research notes
-Compiled data on materials and links to purchase design
-Finalize list and then order parts in advance
-10/25/2025
-- 10/26/2025
-5 hrs
-Ben 
-Finalize compiled list of materials 
-Laptops and Research notes
-Ordered list of needed materials for drone design
-Start concept sketches and rough models.
-10/27/2025 - 10/28/2025
-4 hrs
-Ben,
-Taran,
-Nathaniel,
-Ivin
-Created concept sketches.
-Solidworks 2024
-
-
-Agreed on 3D design on Solidworks and finished drone sketch, and parts report
-Begin Plan for drone and finalize checkpoint 0 submission
-
-
-11/30/2025
-4.5 hrs
-Ben,
-Taran,
-Nathaniel,
-Ivin
-Mounted motors to 3D-printed drone frame
-Drill, Screws, Motors, and Drone frame
-Mounted all 4 motors and began soldering
-Solder motor wires to the ESC
-12/1/2025
--
-12/2/2025
-3 hrs
-Ben,
-Taran,
-Nathaniel,
-Ivin
-Solder motor wires to the ESC and work on portfolio
-Soldering iron, Solder, Wire strippers, and Helping hands with clamps
-Finished soldering motor wires and worked on portfolio
-Finish documentation portfolio
-
-
-12/7/2025
-1.5 hrs
-Taran
-Work on portfolio
-Laptop, Research Notes, and Pictures
-Finished first page,index,
-photo log, work log and worked on bill of materials 
-Finish documentation portfolio - engineered drawings and wired diagrams
-12/8/2025
-1 hr
-Ben, Nathaniel, Taran
-Find parts in open-lab and work on portfolio
-Laptop, Scissors, and Battery to test converter, and open-lab
-Found a 5V converter and wires for our drone and figured out how to wire the ELRS
-Finish documentation portfolio - engineered drawings and wiring diagrams
-12/10/2025
-1.5 hrs
-Ben
-Work on engineered drawings
-Laptop,
-Solidworks
-Finished 3D-modeling of drone for the engineered drawings
-Finish documentation portfolio - engineered drawings and wiring diagrams
-12/12/2025
-5.5 hrs
-Ben, Taran, Ivin
-Work on finishing the whole documentation portfolio
-Laptop, Solidworks, Research Notes, and Pictures
-Finished Documentation Portfolio and submitted for checkpoint 1
-Finish building the drone and dropping mechanism.
-
-
-
-1/4/2026
-5 hrs
-Ben, Taran, Nathaniel, Ivin
-Work on setting up the drone for flight
-Laptop, Soldering iron, Solder, Raspberry Pi Zero WH, SD card reader
-Finished imaging and flashing the Raspberry Pi and soldered the battery.
-Attach a webcam powered by the Raspberry PI to the drone and power motors.
-1/5/2026
-5 hrs 
-Ben, Taran, Nathaniel, Ivin
-Finish mounting of parts onto the drone and start flying it
-Laptop, Soldering iron, Solder, Raspberry Pi Zero WH, SD card reader, BetaFPV Controller, and BetaFPV Configurator
-Mounted the Battery, Webcam and Raspberry Pi Zero WH to the Drone frame 
-Bind the ELRS and the controller successfully and begin flying the drone
-1/6/2026
-3 hr
-Ben, Taran, Nathaniel, Ivin
-Fix 3D printer and BetaFPV issues, add changes to documentation portfolio based on feedback, and begin flying the drone
-Laptop, BetaFPV Controller, and BetaFPV Configurator
-Added information to the drone flight regulations and work log sections of the documentation portfolio
-Work on claw and fix BetaFPV issues
-1/7/2026
-2 hr 
-Ben, Taran, Nathaniel, Ivin
-Fix 3D printer and motor issues 
-Laptop, BetaFPV Controller, and BetaFPV Configurator
-Fixed 3D printer
-Fix motor issues
-1/9/2026
-4 hr
-Ben, 
-Taran
-Figure out how to make drone fly and finish changes to documentation portfolio 
-Laptop, BetaFPV Controller, and BetaFPV Configurator
-Submitted updated documentation portfolio
-Fix motor issues
-
-
-
-
-
+## License
+<img width="210" height="109" alt="image" src="https://github.com/user-attachments/assets/6999c28c-aa88-49fd-bd41-8bc148aaae9e" />
