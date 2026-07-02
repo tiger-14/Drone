@@ -139,7 +139,7 @@ This photo shows the ribbon cable connection between the ESC and the flight cont
 
 
 
-Photo 8 - Connecting Ribbon Cable to the Flight Controller
+Photo 8 - Connecting the Raspberry Pi to the Flight Controller
 
 <img width="1536" height="2048" alt="image" src="https://github.com/user-attachments/assets/981779db-eb3f-4ed0-a5a3-ebf41e3a87af" />
 
