@@ -3,7 +3,8 @@ A custom-built quadcopter drone with an integrated claw and live video feed, des
 
 <img width="982" height="625" alt="image" src="https://github.com/user-attachments/assets/326455fe-56a2-43a1-b644-139c3d407ec6" />
 
-## 30+ Page Documentation Portfolio with a photo log and engineered diagrams
+## 30+ Page Documentation Portfolio
+The portfolio documents the complete build process of the drone with a photo log, a work log, engineered drawings, wired diagrams, and more!
 [IHC Documentation Portfolio - Drone Challenge UAV  (1).pdf](https://github.com/user-attachments/files/29614611/IHC.Documentation.Portfolio.-.Drone.Challenge.UAV.1.pdf)
 
 ## Features
