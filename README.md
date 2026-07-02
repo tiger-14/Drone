@@ -46,8 +46,6 @@ A Raspberry Pi Zero WH, handles the claw and camera. It drives the 3 SG90 servos
 | 5V Converter | Powers Pi + servos | 1 |
 | Claw (3D-printed) | Pickup mechanism | 1 |
 
-*(full BOM with sourcing links in the [IHC Documentation Portfolio - Drone Challenge UAV  (1).pdf](https://github.com/user-attachments/files/29614611/IHC.Documentation.Portfolio.-.Drone.Challenge.UAV.1.pdf))*
-
 ## Compliance
 
 Built and flown in accordance with FAA Part 107 and Remote ID requirements, 400ft altitude ceiling, and Georgia state UAS regulations. Full regulatory breakdown in the documentation portfolio.
